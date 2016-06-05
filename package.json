@@ -7,12 +7,11 @@
     "url": "https://github.com/efleming969/lymph-client.git"
   },
   "author": {
-    "email": "erick@sudogs.com",
+    "email": "efleming969@gmail.com",
     "name": "Erick Fleming"
   },
   "dependencies": {
   },
   "devDependencies": {
-    "lymph-test": "0.6.x"
   }
 }
