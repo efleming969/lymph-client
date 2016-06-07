@@ -15,6 +15,7 @@ app.get( '/'
           <!doctype html>
           <body>
             <h1>Tester</h1>
+            <div id="container"></div>
             <script src='/index.js'></script>
           </body>
       ` )
