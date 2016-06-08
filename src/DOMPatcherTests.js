@@ -141,6 +141,18 @@ exports[ 'DOM Patching' ] = function( test ) {
       } )
     }
 
+  , 'setting the id property of an element': function( assert ) {
+      var container = createContainerWithInnerHTML( '' )
+
+      var vnode = HTML.create( 'button', { id: 'btn' }, [ 'clicker' ] )
+
+      DOMPatcher.patch( container, vnode )
+
+      assert( {
+        '': [ container.innerHTML, '<button id="btn">clicker</button>' ]
+      } )
+    }
+
   } )
 }
 

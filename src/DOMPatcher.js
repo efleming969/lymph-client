@@ -8,19 +8,19 @@ var createElement = function( spec ) {
   var children = spec.children
   var el = document.createElement( spec.tagName )
 
-  // Object.keys( properties ).forEach( function( propKey ) {
-  //   if( propKey === "on" ) {
-  //     Object.keys( properties.on ).forEach( function( onKey ) {
-  //       el.addEventListener( onKey, properties.on[ onKey ], false )
-  //     } ) 
-  //   } else if( propKey === "styles" ) {
-  //     Object.keys( properties.styles ).forEach( function( styleKey ) {
-  //       el.style[ styleKey ] = properties.styles[ styleKey ]
-  //     } )
-  //   }
+  Object.keys( properties ).forEach( function( propKey ) {
+    if( propKey === "on" ) {
+      Object.keys( properties.on ).forEach( function( onKey ) {
+        el.addEventListener( onKey, properties.on[ onKey ], false )
+      } ) 
+    } else if( propKey === "styles" ) {
+      Object.keys( properties.styles ).forEach( function( styleKey ) {
+        el.style[ styleKey ] = properties.styles[ styleKey ]
+      } )
+    }
 
-  //   el[ propKey ] = properties[ propKey ]
-  // } )
+    el[ propKey ] = properties[ propKey ]
+  } )
 
   children.forEach( function ( child ) {
     if( typeof child === "string" ) {
