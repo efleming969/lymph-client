@@ -1,6 +1,6 @@
 {
   "name": "lymph-client",
-  "version": "0.12.0",
+  "version": "0.13.2",
   "description": "Starting",
   "license": "ISC",
   "main": "index.js",
@@ -9,22 +9,30 @@
     "url": "https://github.com/efleming969/lymph-client.git"
   },
   "scripts": {
-    "test": "node src/Tests.js",
-    "test-c": "nodemon --watch tester.js tester.js"
+    "start": "lymph-builder dev"
   },
   "author": {
     "email": "efleming969@gmail.com",
     "name": "Erick Fleming"
   },
   "dependencies": {
-    "ramda": "^0.21.0",
-    "ramda-fantasy": "^0.5.0"
+    "ramda": "^0.22.0",
+    "ramda-fantasy": "^0.6.0"
   },
   "devDependencies": {
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
-    "lymph-bundler": "^0.2.0",
-    "lymph-test": "file:../lymph-test",
-    "nodemon": "^1.9.2"
+    "lymph-builder": "file:///home/erick/Projects/builder",
+    "lymph-test": "file:../lymph-test"
+  },
+  "lymph": {
+    "api_url": {
+      "dev": "http://localhost:8081",
+      "prod": "http://localhost:8081"
+    },
+    "dependencies": [
+      "ramda",
+      "ramda-fantasy"
+    ]
   }
 }

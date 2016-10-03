@@ -50,8 +50,7 @@ var updateProperties = function( a, b ) {
     var aPropValue = a[ propName ]
     var bPropValue = b.properties[ propName ]
 
-    if ( bPropValue != undefined && bPropValue != aPropValue )
-    {
+    if ( bPropValue != undefined && bPropValue != aPropValue ) {
       a[ propName ] = bPropValue
     }
   }
@@ -102,7 +101,7 @@ var updateChildren = function( a, b ) {
         a.replaceChild( document.createTextNode( String( b.children[ i ] ) ), a.childNodes[ i ] )
       }
     }
-    else if ( a.childNodes[ i ].nodeType == 1 ) {
+    else if ( a.childNodes[ i ].nodeType == 1 || a.childNodes[ i ].nodeType == 3 ) {
       update( a.childNodes[ i ], b.children[ i ] )
     }
     else {
@@ -111,25 +110,27 @@ var updateChildren = function( a, b ) {
   }
 }
 
-var update = function( a, b ) {
-  removeChildren( a, b )
-
-  updateProperties( a, b )
-  updateChildren( a, b )
-
-  insertChildren( a, b )
+var shouldReplace = function ( a, b ) {
+  return ( a.tagName != b.tagName ) || ( a.id
+    && b.properties.id
+    && a.id != b.properties.id )
 }
 
-var patch = exports.patch = function( container, vnode ) {
-
-  if ( container.childNodes.length == 0 ) {
-    container.appendChild( createElement( vnode ) )
-  }
-  else if ( container.firstChild.tagName != vnode.tagName ) {
-    container.replaceChild( createElement( vnode ), container.firstChild )
+var update = function( a, b ) {
+  if ( shouldReplace( a, b ) ) {
+    a.parentNode.replaceChild( createElement( b ), a )
   }
   else {
-    update( container.firstChild, vnode )
+    removeChildren( a, b )
+
+    updateProperties( a, b )
+    updateChildren( a, b )
+
+    insertChildren( a, b )
   }
+}
+
+var patch = exports.patch = function( node, vnode ) {
+    update( node, vnode )
 }
 
