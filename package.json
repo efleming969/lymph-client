@@ -1,38 +1,26 @@
 {
   "name": "lymph-client",
-  "version": "0.13.2",
-  "description": "Starting",
-  "license": "ISC",
+  "version": "0.13.0",
+  "description": "",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/efleming969/lymph-client.git"
-  },
   "scripts": {
-    "start": "lymph-builder dev"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": {
-    "email": "efleming969@gmail.com",
-    "name": "Erick Fleming"
-  },
-  "dependencies": {
-    "ramda": "^0.22.0",
-    "ramda-fantasy": "^0.6.0"
-  },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "body-parser": "^1.15.1",
-    "express": "^4.13.4",
-    "lymph-builder": "file:///home/erick/Projects/builder",
-    "lymph-test": "file:../lymph-test"
+    "@types/jest": "^21.1.9",
+    "jest": "^22.0.4",
+    "jsdom": "^11.5.1",
+    "rollup": "^0.53.0",
+    "typescript": "^2.6.2",
+    "uglify-js": "^3.2.2"
   },
-  "lymph": {
-    "api_url": {
-      "dev": "http://localhost:8081",
-      "prod": "http://localhost:8081"
-    },
-    "dependencies": [
-      "ramda",
-      "ramda-fantasy"
+  "jest": {
+    "rootDir": "build",
+    "testMatch": [
+      "**/*Tests.js"
     ]
-  }
+  },
+  "dependencies": {}
 }
