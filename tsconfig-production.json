@@ -1,9 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "module": "es2015",
+    "outDir": "lib",
+    "strict": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
-    "outDir": "tmp",
-    "lib": [ "es2015", "dom" ]
+    "declaration": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ]
   }
 }

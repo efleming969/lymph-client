@@ -2,9 +2,9 @@
   "name": "lymph-client",
   "version": "0.13.0",
   "description": "",
-  "main": "index.js",
+  "module": "./lib/Lymph.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --project tsconfig.json"
   },
   "author": "",
   "license": "ISC",
