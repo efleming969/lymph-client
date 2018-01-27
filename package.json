@@ -1,8 +1,9 @@
 {
   "name": "lymph-client",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "",
   "module": "./lib/Lymph.js",
+  "main": "./lib/Lymph.js",
   "scripts": {
     "build": "tsc --project tsconfig.json"
   },
