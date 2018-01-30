@@ -11,7 +11,11 @@ const run = function ( window, app_component, app_name ) {
 
     let view = app.render( viewState )
 
-    window.addEventListener( "action", function ( e: CustomEvent ) {
+    const lymph_config = window[ "lymphConfig" ] || {
+        actionName: "action"
+    }
+
+    window.addEventListener( lymph_config.actionName, function ( e: CustomEvent ) {
         console.group( "%c", "color: gray; font-weight: lighter;", e.detail.name )
 
         console.log( "%c prev state", "color: #9E9E9E; font-weight: bold;", viewState )
@@ -34,7 +38,7 @@ const run = function ( window, app_component, app_name ) {
 
     window.addEventListener( "hashchange", function ( e ) {
         window.document.dispatchEvent(
-            new window[ "CustomEvent" ]( "action", {
+            new window[ "CustomEvent" ]( lymph_config.actionName, {
                 detail: { name: `:route-changed`, data: window.location.hash.slice( 1 ) },
                 bubbles: true,
                 cancelable: true

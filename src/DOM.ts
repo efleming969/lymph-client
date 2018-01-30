@@ -45,8 +45,9 @@ const updateProperties = function ( window: Window, oldNode, spec ) {
         if ( propName.startsWith( "on" ) ) {
             oldNode[ propName ] = (function ( [ name, data ] ) {
                 return function ( event ) {
+                    const lymph_config = window[ "lymphConfig" ] || { actionName: "action" }
                     this.dispatchEvent(
-                        new window[ "CustomEvent" ]( "action", {
+                        new window[ "CustomEvent" ]( lymph_config.actionName, {
                             detail: { name, data, event },
                             bubbles: true,
                             cancelable: true

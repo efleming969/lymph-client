@@ -12,12 +12,18 @@ export const process = function ( window, commands ) {
 
             if ( command.type === "execute" ) {
                 sendCommand( command.url, command.data, command.token ).then( function ( response ) {
-                    dispatchAction( { name: command.action, data: response.data } )
+                    dispatchAction( {
+                        name: command.action,
+                        data: { body: response.data, status: response.status }
+                    } )
                 } )
             }
             else if ( command.type === "query" ) {
                 sendQuery( command.url, command.token ).then( function ( response ) {
-                    dispatchAction( { name: command.action, data: response.data } )
+                    dispatchAction( {
+                        name: command.action,
+                        data: { body: response.data, status: response.status }
+                    } )
                 } )
             }
             else if ( command.type === "load" ) {
