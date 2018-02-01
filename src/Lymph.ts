@@ -1,9 +1,8 @@
 import * as DOM from "./DOM"
 import * as Utils from "./Utils"
 import * as Command from "./Command"
-import * as HTML from "./HTML"
 
-const run = function ( window, app_component, app_name ) {
+export const run = function ( window, app_component, app_name ) {
     const context = Utils.createContext()
     const app = context.createComponent( app_component, app_name )
 
@@ -53,5 +52,3 @@ const run = function ( window, app_component, app_name ) {
 
     Command.process( window, commands )
 }
-
-export { run, Utils, HTML, Command }
