@@ -6,7 +6,12 @@ export const run = function ( window, app_component, app_name ) {
     const context = Utils.createContext()
     const app = context.createComponent( app_component, app_name )
 
-    let [ viewState, commands ] = app.init( window.location.hash.slice( 1 ) )
+    let [ viewState, command ] = app.init( window.location.hash.slice( 1 ) )
+
+    console.group( "%c", "color: gray; font-weight: lighter;", ":init" )
+    console.log( "%c next state", "color: #4CAF50; font-weight: bold;", viewState )
+    console.log( "%c commands", "color: #4CAF50; font-weight: bold;", command )
+    console.groupEnd()
 
     let view = app.render( viewState )
 
@@ -20,17 +25,17 @@ export const run = function ( window, app_component, app_name ) {
         console.log( "%c prev state", "color: #9E9E9E; font-weight: bold;", viewState )
         console.log( "%c message", "color: #03A9F4; font-weight: bold;", e.detail )
 
-        const [ state, commands ] = app.update( e.detail, viewState )
+        const [ state, command ] = app.update( e.detail, viewState )
 
         console.log( "%c next state", "color: #4CAF50; font-weight: bold;", state )
-        console.log( "%c commands", "color: #4CAF50; font-weight: bold;", commands )
+        console.log( "%c commands", "color: #4CAF50; font-weight: bold;", command )
 
         viewState = state
         view = app.render( viewState )
 
         DOM.updateChildren( window, window.document.body, view )
 
-        Command.process( window, commands )
+        Command.process( window, command )
 
         console.groupEnd()
     } )
@@ -50,5 +55,5 @@ export const run = function ( window, app_component, app_name ) {
 
     DOM.updateChildren( window, window.document.body, view )
 
-    Command.process( window, commands )
+    Command.process( window, command )
 }

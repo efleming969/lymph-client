@@ -1,4 +1,4 @@
-export declare const process: (window: any, commands: any) => void;
+export declare const process: (window: any, command: any) => void;
 export declare const execute: (url: any, data: any, action: any, token?: any) => {
     type: string;
     url: any;

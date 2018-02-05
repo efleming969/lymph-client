@@ -1,54 +1,50 @@
 import * as Utils from "./Utils"
 import * as HTTP from "./HTTP"
 
-export const process = function ( window, commands ) {
+export const process = function ( window, command ) {
     const dispatchAction = Utils.dispatchAction( window )
     const sendCommand = HTTP.sendCommand( window.fetch )
     const sendQuery = HTTP.sendQuery( window.fetch )
 
-    if ( commands !== undefined ) {
-        for ( let i = 0; i < commands.length; i++ ) {
-            const command = commands[ i ]
-
-            if ( command.type === "execute" ) {
-                sendCommand( command.url, command.data, command.token ).then( function ( response ) {
-                    dispatchAction( {
-                        name: command.action,
-                        data: { body: response.data, status: response.status }
-                    } )
+    if ( command != null ) {
+        if ( command.type === "execute" ) {
+            sendCommand( command.url, command.data, command.token ).then( function ( response ) {
+                dispatchAction( {
+                    name: command.action,
+                    data: { body: response.data, status: response.status }
                 } )
-            }
-            else if ( command.type === "query" ) {
-                sendQuery( command.url, command.token ).then( function ( response ) {
-                    dispatchAction( {
-                        name: command.action,
-                        data: { body: response.data, status: response.status }
-                    } )
-                } )
-            }
-            else if ( command.type === "load" ) {
-                setTimeout( function () {
-                    const data = JSON.parse( window.localStorage.getItem( command.location ) )
-                    dispatchAction( { name: command.action, data } )
-                }, 0 )
-            }
-            else if ( command.type === "save" ) {
-                setTimeout( function () {
-                    window.localStorage.setItem( command.location, JSON.stringify( command.data ) )
-                    if ( command.action )
-                        dispatchAction( { name: command.action } )
-                }, 0 )
-            }
-            else if ( command.type === "redirect" ) {
-                console.log( "redirecting", command.path )
-                setTimeout( function () {
-                    window.location.assign( command.path )
-                }, 0 )
-            }
-            else if ( window.config.commands && window.config.commands[ command.type ] ) {
-                window.config.commands[ command.type ]( command )
-            }
+            } )
         }
+        else if ( command.type === "query" ) {
+            sendQuery( command.url, command.token ).then( function ( response ) {
+                dispatchAction( {
+                    name: command.action,
+                    data: { body: response.data, status: response.status }
+                } )
+            } )
+        }
+        else if ( command.type === "load" ) {
+            setTimeout( function () {
+                const data = JSON.parse( window.localStorage.getItem( command.location ) )
+                dispatchAction( { name: command.action, data } )
+            }, 0 )
+        }
+        else if ( command.type === "save" ) {
+            setTimeout( function () {
+                window.localStorage.setItem( command.location, JSON.stringify( command.data ) )
+                if ( command.action )
+                    dispatchAction( { name: command.action } )
+            }, 0 )
+        }
+        else if ( command.type === "redirect" ) {
+            console.log( "redirecting", command.path )
+            setTimeout( function () {
+                window.location.assign( command.path )
+            }, 0 )
+        }
+        // else if ( window.config.commands && window.config.commands[ command.type ] ) {
+        //     window.config.commands[ command.type ]( command )
+        // }
     }
 }
 

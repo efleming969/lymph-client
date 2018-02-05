@@ -180,3 +180,8 @@ export const createContext = function ( names = [] ) {
     }
 }
 
+export const createActionHandler = window => function ( action, callback ) {
+    window.addEventListener( "action", function ( e ) {
+        if ( e[ "detail" ].name === action ) callback( e[ "detail" ] )
+    } )
+}

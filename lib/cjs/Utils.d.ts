@@ -24,3 +24,4 @@ export declare const createContext: (names?: any[]) => {
     };
     send: (name: any) => string;
 };
+export declare const createActionHandler: (window: any) => (action: any, callback: any) => void;
