@@ -45,21 +45,21 @@ export const createTestContext = function () {
     }
 }
 
-export const createFakeFetch = function ( response ) {
-    return function ( url, options ) {
+export const createFakeFetch = function ( path, response ) {
+    return jest.fn( function ( url, options ) {
         return new Promise( function ( res, rej ) {
             const responseToForward = {
                 status: response.status,
                 json: () => Promise.resolve( response.data )
             }
 
-            if ( url === "/api/post1" || url === "/api/get1" ) {
+            if ( url === path ) {
                 res( responseToForward )
             }
             else {
                 rej( responseToForward )
             }
         } )
-    }
+    } )
 }
 

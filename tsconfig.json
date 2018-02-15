@@ -1,18 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "es2015",
-    "outDir": "lib",
+    "target": "es6",
+    "module": "commonjs",
     "strict": false,
+    "outDir": "build",
     "inlineSourceMap": true,
     "inlineSources": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
-    "declaration": true,
-    "lib": [
-      "dom",
-      "es2015"
-    ]
+    "declaration": true
   }
 }

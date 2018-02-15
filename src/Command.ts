@@ -1,14 +1,13 @@
+import HTTP from "./HTTP"
 import * as Utils from "./Utils"
-import * as HTTP from "./HTTP"
 
 export const process = function ( window, command ) {
+    const http = new HTTP( window.fetch )
     const dispatchAction = Utils.dispatchAction( window )
-    const sendCommand = HTTP.sendCommand( window.fetch )
-    const sendQuery = HTTP.sendQuery( window.fetch )
 
     if ( command != null ) {
         if ( command.type === "execute" ) {
-            sendCommand( command.url, command.data, command.token ).then( function ( response ) {
+            http.execute( command.url, command.data, command.token ).then( function ( response ) {
                 dispatchAction( {
                     name: command.action,
                     data: { body: response.data, status: response.status }
@@ -16,7 +15,7 @@ export const process = function ( window, command ) {
             } )
         }
         else if ( command.type === "query" ) {
-            sendQuery( command.url, command.token ).then( function ( response ) {
+            http.query( command.url, command.token ).then( function ( response ) {
                 dispatchAction( {
                     name: command.action,
                     data: { body: response.data, status: response.status }

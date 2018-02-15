@@ -7,7 +7,7 @@ describe( "Command", function () {
         const command = Command.execute( "/api/post1", { name: "foobar" }, "command-done" )
         const window = createWindow()
 
-        window.fetch = createFakeFetch( { status: 200, data: {} } )
+        window.fetch = createFakeFetch( "/api/post1", { status: 200, data: {} } )
 
         window.addEventListener( "action", function ( e ) {
             expect( e.detail ).toEqual( { name: "command-done", data: {} } )
@@ -21,10 +21,16 @@ describe( "Command", function () {
         const command = Command.query( "/api/get1", "query-done" )
         const window = createWindow()
 
-        window.fetch = createFakeFetch( { status: 200, data: { name: "response-data" } } )
+        window.fetch = createFakeFetch( "/api/get1", {
+            status: 200,
+            data: { name: "response-data" }
+        } )
 
         window.addEventListener( "action", function ( e ) {
-            expect( e.detail ).toEqual( { name: "query-done", data: { name: "response-data" } } )
+            expect( e.detail ).toEqual( {
+                name: "query-done",
+                data: { name: "response-data" }
+            } )
             done()
         } )
 
@@ -53,7 +59,10 @@ describe( "Command", function () {
         window.localStorage = { getItem: () => JSON.stringify( { name: "some-data" } ) }
 
         window.addEventListener( "action", function ( e ) {
-            expect( e.detail ).toEqual( { name: "load-done", data: { name: "some-data" } } )
+            expect( e.detail ).toEqual( {
+                name: "load-done",
+                data: { name: "some-data" }
+            } )
             done()
         } )
 

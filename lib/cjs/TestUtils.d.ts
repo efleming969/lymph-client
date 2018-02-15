@@ -1,3 +1,4 @@
+/// <reference types="jest" />
 export declare const createTarget: (html: any) => any;
 export declare const createWindow: () => any;
 export declare const createTestContext: () => {
@@ -6,4 +7,4 @@ export declare const createTestContext: () => {
     render: (view: any) => void;
     find: (selector: any) => any;
 };
-export declare const createFakeFetch: (response: any) => (url: any, options: any) => Promise<{}>;
+export declare const createFakeFetch: (path: any, response: any) => jest.Mock<Promise<{}>>;

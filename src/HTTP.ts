@@ -1,39 +1,39 @@
-export const sendCommand = function ( fetch ) {
-    return function ( path, data, auth_token ) {
-        const options = {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": auth_token,
-                "Accept": "application/json"
-            },
-            body: JSON.stringify( data )
-        }
+import { merge } from "./Utils"
 
-        return fetch( path, options ).then( function ( response ) {
+const fetchHeaders = {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+}
+
+const createFetchOptions = function ( method: string, token: string, data: any ) {
+    const headers = merge( fetchHeaders, token ? { "Authorization": token } : {} )
+    const body = JSON.stringify( data )
+
+    return { method, headers, body }
+}
+
+export default class {
+    constructor ( private fetch ) {
+    }
+
+    execute ( path: string, data: any, auth_token?: string ) {
+        const options = createFetchOptions( "POST", auth_token, data )
+
+        return this.fetch( path, options ).then( function ( response ) {
             return response.json().then( function ( data ) {
-                return { data, status: response.status }
+                if ( response.status === 400 ) throw data
+                return data
             } )
         } )
     }
-}
 
-export const sendQuery = function ( fetch ) {
-    return function ( path, auth_token ) {
-        const options = {
-            method: "GET",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": auth_token,
-                "Accept": "application/json"
-            }
-        }
+    query ( path: string, auth_token?: string ) {
+        const options = createFetchOptions( "GET", auth_token, null )
 
-        return fetch( path, options ).then( function ( response ) {
+        return this.fetch( path, options ).then( function ( response ) {
             return response.json().then( function ( data ) {
-                return { data, status: response.status }
+                if ( response.status === 400 ) throw data
+                return data
             } )
         } )
     }

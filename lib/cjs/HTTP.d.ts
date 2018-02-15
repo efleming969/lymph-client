@@ -1,2 +1,6 @@
-export declare const sendCommand: (fetch: any) => (path: any, data: any, auth_token: any) => any;
-export declare const sendQuery: (fetch: any) => (path: any, auth_token: any) => any;
+export default class  {
+    private fetch;
+    constructor(fetch: any);
+    execute(path: string, data: any, auth_token?: string): any;
+    query(path: string, auth_token?: string): any;
+}

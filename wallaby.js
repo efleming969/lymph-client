@@ -1,7 +1,7 @@
 module.exports = function () {
   return {
-    files: [ "src/**/*.ts", "!src/**/*Tests.ts" ],
-    tests: [ "src/**/*Tests.ts" ],
+    files: [ "src/**/*.ts", "!src/**/*.tests.ts" ],
+    tests: [ "src/**/*.tests.ts" ],
     env: { type: "node", runner: "node" },
     testFramework: "jest"
   }
