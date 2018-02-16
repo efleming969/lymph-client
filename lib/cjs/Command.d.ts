@@ -40,3 +40,7 @@ export declare class Redirect implements Command {
     executeIn(environment: Environment): void;
 }
 export declare const redirect: (path: string) => Redirect;
+export declare class None implements Command {
+    executeIn(environment: Environment): void;
+}
+export declare const none: None;

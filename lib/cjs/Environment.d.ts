@@ -1,6 +1,5 @@
 export interface Environment {
-    post(path: string, data: any, auth_token?: string): Promise<any>;
-    get(path: string, auth_token?: string): Promise<any>;
+    fetch(path: string, options: any): Promise<any>;
     changeLocation(path: string): void;
     writeStorage(location: string, data: any): void;
     readStorage(location: string): any;
@@ -8,10 +7,8 @@ export interface Environment {
 }
 export declare class WindowEnvironment implements Environment {
     private window;
-    private http;
     constructor(window: any);
-    post(path: string, data: any, auth_token?: string): Promise<any>;
-    get(path: string, auth_token?: string): Promise<any>;
+    fetch(path: string, options: any): Promise<any>;
     changeLocation(path: string): void;
     writeStorage(location: string, data: string): void;
     readStorage(location: string): string;

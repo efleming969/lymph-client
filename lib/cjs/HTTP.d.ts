@@ -1,3 +1,8 @@
+export declare const createFetchOptions: (method: string, token: string, data: any) => {
+    method: string;
+    headers: any;
+    body: string;
+};
 export default class  {
     private fetch;
     constructor(fetch: any);
