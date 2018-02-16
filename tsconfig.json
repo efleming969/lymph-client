@@ -1,14 +1,18 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "es2015",
     "strict": false,
-    "outDir": "build",
+    "outDir": "lib/esm",
     "inlineSourceMap": true,
     "inlineSources": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "declaration": true
-  }
+  },
+  "exclude": [
+    "lib"
+  ]
 }

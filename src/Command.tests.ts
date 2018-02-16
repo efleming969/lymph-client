@@ -1,79 +1,60 @@
 import * as Command from "./Command"
 import { createFakeFetch, createWindow } from "./TestUtils"
+import { WindowEnvironment, Environment } from "./Environment"
 
-describe( "Command", function () {
+describe( "how commands interact with browser environment", function () {
 
-    test( "execute remote command", function ( done ) {
-        const command = Command.execute( "/api/post1", { name: "foobar" }, "command-done" )
-        const window = createWindow()
+    let fake_environment: Environment
+    let window
 
-        window.fetch = createFakeFetch( "/api/post1", { status: 200, data: {} } )
-
+    const expectAction = function ( name, data, done ) {
         window.addEventListener( "action", function ( e ) {
-            expect( e.detail ).toEqual( { name: "command-done", data: {} } )
+            expect( e.detail ).toEqual( { name, data } )
             done()
         } )
+    }
 
-        Command.process( window, [ command ] )
+    beforeEach( function () {
+        window = createWindow()
+        window.fetch = createFakeFetch( "/foo", { status: 200, data: {} } )
+        fake_environment = new WindowEnvironment( window )
     } )
 
-    test( "execute remote query", function ( done ) {
-        const command = Command.query( "/api/get1", "query-done" )
-        const window = createWindow()
-
-        window.fetch = createFakeFetch( "/api/get1", {
-            status: 200,
-            data: { name: "response-data" }
-        } )
-
-        window.addEventListener( "action", function ( e ) {
-            expect( e.detail ).toEqual( {
-                name: "query-done",
-                data: { name: "response-data" }
-            } )
-            done()
-        } )
-
-        Command.process( window, [ command ] )
+    xtest( "execute command fires action", function ( done ) {
+        Command.execute( "/foo", {}, "action-name" ).executeIn( fake_environment )
+        expectAction( "action-name", {}, done )
     } )
 
-    test( "save data to local storage", function ( done ) {
-        const command = Command.save( "some-data", { name: "some-data" }, "save-done" )
-        const window = createWindow()
-
-        window.localStorage = { setItem: jest.fn() }
-
-        window.addEventListener( "action", function ( e ) {
-            expect( window.localStorage.setItem )
-                .toHaveBeenCalledWith( "some-data", JSON.stringify( { name: "some-data" } ) )
-            done()
-        } )
-
-        Command.process( window, [ command ] )
+    xtest( "query command fires action with fetched data", function ( done ) {
+        Command.query( "/foo", "action-name" ).executeIn( fake_environment )
+        expectAction( "action-name", {}, done )
     } )
 
-    test( "load data from local storage", function ( done ) {
-        const command = Command.load( "some-data", "load-done" )
-        const window = createWindow()
+    xtest( "write data to local storage", function ( done ) {
+        fake_environment.writeStorage = jest.fn()
 
-        window.localStorage = { getItem: () => JSON.stringify( { name: "some-data" } ) }
+        const data_to_write = { name: "foo" }
 
-        window.addEventListener( "action", function ( e ) {
-            expect( e.detail ).toEqual( {
-                name: "load-done",
-                data: { name: "some-data" }
-            } )
-            done()
-        } )
+        Command.write( "location", data_to_write, "action-name" )
+            .executeIn( fake_environment )
 
-        Command.process( window, [ command ] )
+        expect( fake_environment.writeStorage )
+            .toHaveBeenCalledWith( "location", JSON.stringify( data_to_write ) )
+
+        expectAction( "action-name", {}, done )
     } )
 
-    test( "redirect", function () {
-        const window = { location: { assign: jest.fn() } }
+    xtest( "load data from local storage", function ( done ) {
+        fake_environment.readStorage = () => JSON.stringify( { name: "foo" } )
 
-        Command.process( window, [ Command.redirect( "/some/path" ) ] )
+        Command.read( "some-data", "action-done" ).executeIn( fake_environment )
 
-        expect( window.location.assign ).toHaveBeenCalledWith( "/some/path" )
+        expectAction( "action-done", { name: "foo" }, done )
+    } )
+
+    xtest( "redirect", function () {
+        fake_environment.changeLocation = jest.fn()
+        Command.redirect( "/some/path" ).executeIn( fake_environment )
+        expect( fake_environment.changeLocation ).toHaveBeenCalledWith( "/some/path" )
     } )
 } )

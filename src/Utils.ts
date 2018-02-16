@@ -21,46 +21,11 @@ export const merge = function ( obj1, obj2 ) {
     return Object.assign( {}, obj1, obj2 )
 }
 
-const sendQuery = function ( path ) {
-    const options = { method: "GET" }
-
-    const handleErrors = function ( response ) {
-        if ( !response.ok )
-            throw new Error( "whatup dog!" )
-
-        return response
-    }
-
-    return fetch( path, options )
-        .then( handleErrors )
-        .then( response => response.json() )
-}
-
-const sendCommand = function ( name, events, data ) {
-    return { type: "RemoteCommand", name, data, events }
-}
-
-const loadStorage = function ( name, events ) {
-    return { type: "LoadStorage", name, events }
-}
-
-const sendRedirect = function ( path ) {
-    return { type: "Redirect", events: [], path }
-}
-
 export const dispatchAction = function ( window ) {
     return function ( event ) {
         window.dispatchEvent( new window.CustomEvent( "action",
             { detail: event, bubbles: true, cancelable: true } ) )
     }
-}
-
-const send = function ( name, data ) {
-    return { name, data }
-}
-
-export const sendForm = function ( name ) {
-    return { type: "form", name }
 }
 
 export const evolve = function ( transformations, object ) {
@@ -81,7 +46,6 @@ export const evolve = function ( transformations, object ) {
     }
     return result
 }
-
 
 export interface IHasEvent {
     event: Event

@@ -1,8 +1,9 @@
 import * as DOM from "./DOM"
 import * as Utils from "./Utils"
-import * as Command from "./Command"
+import { WindowEnvironment } from "./Environment"
 
 export const run = function ( window, app_component, app_name ) {
+    const environment = new WindowEnvironment( window )
     const context = Utils.createContext()
     const app = context.createComponent( app_component, app_name )
 
@@ -35,7 +36,7 @@ export const run = function ( window, app_component, app_name ) {
 
         DOM.updateChildren( window, window.document.body, view )
 
-        Command.process( window, command )
+        command.executeIn( environment )
 
         console.groupEnd()
     } )
@@ -55,5 +56,5 @@ export const run = function ( window, app_component, app_name ) {
 
     DOM.updateChildren( window, window.document.body, view )
 
-    Command.process( window, command )
+    command.executeIn( environment )
 }

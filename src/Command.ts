@@ -1,69 +1,105 @@
-import HTTP from "./HTTP"
-import * as Utils from "./Utils"
+import { Environment } from "./Environment"
+import { createFetchOptions } from "./HTTP"
 
-export const process = function ( window, command ) {
-    const http = new HTTP( window.fetch )
-    const dispatchAction = Utils.dispatchAction( window )
+export interface Command {
+    executeIn( environment: Environment ): void
+}
 
-    if ( command != null ) {
-        if ( command.type === "execute" ) {
-            http.execute( command.url, command.data, command.token ).then( function ( response ) {
-                dispatchAction( {
-                    name: command.action,
-                    data: { body: response.data, status: response.status }
-                } )
+export class Execute implements Command {
+    constructor ( private url: string,
+                  private data: any,
+                  private action: string,
+                  private token: string | undefined ) {
+    }
+
+    executeIn ( environment: Environment ): void {
+        const fetch_options = createFetchOptions( "POST", this.token, this.data )
+        const action_name = this.action
+
+        environment.fetch( this.url, fetch_options ).then( function ( response ) {
+            return response.json().then( function ( response_data ) {
+                if ( response.status === 400 ) throw response_data
+                environment.dispatch( action_name, response_data )
             } )
-        }
-        else if ( command.type === "query" ) {
-            http.query( command.url, command.token ).then( function ( response ) {
-                dispatchAction( {
-                    name: command.action,
-                    data: { body: response.data, status: response.status }
-                } )
-            } )
-        }
-        else if ( command.type === "load" ) {
-            setTimeout( function () {
-                const data = JSON.parse( window.localStorage.getItem( command.location ) )
-                dispatchAction( { name: command.action, data } )
-            }, 0 )
-        }
-        else if ( command.type === "save" ) {
-            setTimeout( function () {
-                window.localStorage.setItem( command.location, JSON.stringify( command.data ) )
-                if ( command.action )
-                    dispatchAction( { name: command.action } )
-            }, 0 )
-        }
-        else if ( command.type === "redirect" ) {
-            console.log( "redirecting", command.path )
-            setTimeout( function () {
-                window.location.assign( command.path )
-            }, 0 )
-        }
-        // else if ( window.config.commands && window.config.commands[ command.type ] ) {
-        //     window.config.commands[ command.type ]( command )
-        // }
+        } )
     }
 }
 
-export const execute = function ( url, data, action, token? ) {
-    return { type: "execute", url, data, action, token }
+export const execute = function ( url: string, data: any, action: string, token?: string ) {
+    return new Execute( url, data, action, token )
 }
 
-export const query = function ( url, action, token? ) {
-    return { type: "query", url, action, token }
+export class Query implements Command {
+    constructor ( private url: string,
+                  private action: string,
+                  private token: string | undefined ) {
+    }
+
+    executeIn ( environment: Environment ): void {
+        const fetch_options = createFetchOptions( "GET", this.token, null )
+        const action_name = this.action
+
+        environment.fetch( this.url, fetch_options ).then( function ( response ) {
+            return response.json().then( function ( response_data ) {
+                if ( response.status === 400 ) throw response_data
+                environment.dispatch( action_name, response_data )
+            } )
+        } )
+    }
 }
 
-export const redirect = function ( path ) {
-    return { type: "redirect", path }
+export const query = function ( url: string, action: string, token?: string ) {
+    return new Query( url, action, token )
 }
 
-export const load = function ( location, action ) {
-    return { type: "load", location, action }
+export class ReadStorage implements Command {
+    constructor ( private location: string,
+                  private action: string ) {
+    }
+
+    executeIn ( environment: Environment ): void {
+        const data = JSON.parse( environment.readStorage( this.location ) )
+        environment.dispatch( this.action, data )
+    }
 }
 
-export const save = function ( location, data, action? ) {
-    return { type: "save", location, data, action }
+export const read = function ( location: string, action: string ) {
+    return new ReadStorage( location, action )
 }
+
+export class WriteStorage implements Command {
+    constructor ( private location: string,
+                  private data: any,
+                  private action: string | undefined ) {
+    }
+
+    executeIn ( environment: Environment ): void {
+        environment.writeStorage( this.location, JSON.stringify( this.data ) )
+        if ( this.action ) environment.dispatch( this.action, this.data )
+    }
+}
+
+export const write = function ( location: string, data: any, action?: string ) {
+    return new WriteStorage( location, data, action )
+}
+
+export class Redirect implements Command {
+    constructor ( private path: string ) {
+    }
+
+    executeIn ( environment: Environment ) {
+        environment.changeLocation( this.path )
+    }
+}
+
+export const redirect = function ( path: string ): Redirect {
+    return new Redirect( path )
+}
+
+export class None implements Command {
+    executeIn ( environment: Environment ): void {
+    }
+}
+
+export const none = new None()
 

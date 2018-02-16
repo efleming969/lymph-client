@@ -7,7 +7,7 @@ describe( "posting data to json endpoint", function () {
         const http = new HTTP(
             createFakeFetch( "/foobar", { status: 200, data: { name: "foo" } } ) )
 
-        return http.execute( "/foobar", {} ).then( function ( response_data ) {
+        return http.post( "/foobar", {} ).then( function ( response_data ) {
             expect( response_data ).toEqual( { name: "foo" } )
         } )
     } )
@@ -16,7 +16,7 @@ describe( "posting data to json endpoint", function () {
         const fakeFetch = createFakeFetch( "/foo", {} )
         const http = new HTTP( fakeFetch )
 
-        return http.execute( "/foo", { text: "foobar" } ).then( function ( response ) {
+        return http.post( "/foo", { text: "foobar" } ).then( function ( response ) {
             expect( fakeFetch.mock.calls[ 0 ][ 1 ].body )
                 .toEqual( JSON.stringify( { text: "foobar" } ) )
         } )
@@ -26,7 +26,7 @@ describe( "posting data to json endpoint", function () {
         const fakeFetch = createFakeFetch( "/foo", {} )
         const http = new HTTP( fakeFetch )
 
-        return http.execute( "/foo", {}, "jwt" ).then( function ( response ) {
+        return http.post( "/foo", {}, "jwt" ).then( function ( response ) {
             expect( fakeFetch.mock.calls[ 0 ][ 1 ].headers[ "Authorization" ] )
                 .toEqual( "jwt" )
         } )
@@ -36,7 +36,7 @@ describe( "posting data to json endpoint", function () {
         const fakeFetch = createFakeFetch( "/foo", {} )
         const http = new HTTP( fakeFetch )
 
-        return http.execute( "/foo", {} ).then( function ( response ) {
+        return http.post( "/foo", {} ).then( function ( response ) {
             expect( fakeFetch.mock.calls[ 0 ][ 1 ].headers[ "Authorization" ] )
                 .toBeUndefined()
         } )
@@ -50,7 +50,7 @@ describe( "posting data to json endpoint", function () {
 
         const http = new HTTP( fakeFetch )
 
-        return http.execute( "/foo", {} ).then( function ( response ) {
+        return http.post( "/foo", {} ).then( function ( response ) {
             throw Error( "did not handle bad request" )
         }, function ( error ) {
             expect( error ).toEqual( "error_message" )
@@ -64,7 +64,7 @@ describe( "querying data from a json endpoint", function () {
         const http = new HTTP(
             createFakeFetch( "/foobar", { status: 200, data: { name: "foo" } } ) )
 
-        return http.query( "/foobar" ).then( function ( response ) {
+        return http.get( "/foobar" ).then( function ( response ) {
             expect( response ).toEqual( { name: "foo" } )
         } )
     } )
@@ -73,7 +73,7 @@ describe( "querying data from a json endpoint", function () {
         const fakeFetch = createFakeFetch( "/foo", {} )
         const http = new HTTP( fakeFetch )
 
-        return http.query( "/foo", "jwt" ).then( function ( response ) {
+        return http.get( "/foo", "jwt" ).then( function ( response ) {
             expect( fakeFetch.mock.calls[ 0 ][ 1 ].headers[ "Authorization" ] )
                 .toEqual( "jwt" )
         } )
@@ -83,7 +83,7 @@ describe( "querying data from a json endpoint", function () {
         const fakeFetch = createFakeFetch( "/foo", {} )
         const http = new HTTP( fakeFetch )
 
-        return http.query( "/foo" ).then( function ( response ) {
+        return http.get( "/foo" ).then( function ( response ) {
             expect( fakeFetch.mock.calls[ 0 ][ 1 ].headers[ "Authorization" ] )
                 .toBeUndefined()
         } )
@@ -97,7 +97,7 @@ describe( "querying data from a json endpoint", function () {
 
         const http = new HTTP( fakeFetch )
 
-        return http.query( "/foo" ).then( function ( response ) {
+        return http.get( "/foo" ).then( function ( response ) {
             throw Error( "did not handle bad request" )
         }, function ( error ) {
             expect( error ).toEqual( "error_message" )

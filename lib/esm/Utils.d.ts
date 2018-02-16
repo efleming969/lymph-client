@@ -2,10 +2,6 @@ export declare const generateId: () => string;
 export declare const objectFromPair: (pair: any) => {};
 export declare const merge: (obj1: any, obj2: any) => any;
 export declare const dispatchAction: (window: any) => (event: any) => void;
-export declare const sendForm: (name: any) => {
-    type: string;
-    name: any;
-};
 export declare const evolve: (transformations: any, object: any) => {};
 export interface IHasEvent {
     event: Event;

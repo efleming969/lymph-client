@@ -1,6 +1,8 @@
 import * as JSDOM from "jsdom"
 
 import * as DOM from "./DOM"
+import { Environment } from "./Environment"
+import HTTP from "./HTTP"
 
 export const createTarget = function ( html ) {
     const template = `<!DOCTYPE html><head></head><body>${ html }</body>`

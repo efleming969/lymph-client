@@ -1,6 +1,7 @@
 /// <reference types="jest" />
-export declare const createTarget: (html: any) => any;
-export declare const createWindow: () => any;
+import * as JSDOM from "jsdom";
+export declare const createTarget: (html: any) => Node;
+export declare const createWindow: () => JSDOM.DOMWindow;
 export declare const createTestContext: () => {
     onAction: (callback: any) => void;
     dispatch: (event_type: any, selector: any) => void;
