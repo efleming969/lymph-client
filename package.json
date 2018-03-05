@@ -1,27 +1,25 @@
 {
   "name": "lymph-client",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "",
-  "module": "lib/esm/index.js",
-  "main": "lib/cjs/index.js",
-  "jsdelivr": "dist/lymph-client.js",
+  "main": "./lib/LymphClient.js",
+  "types": "./lib/LymphClient.d.ts",
+  "jsdelivr": "./dist/lymph-client.js",
   "scripts": {
     "test": "jest",
-    "build": "npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc --project tsconfig.json --module es2015 --outDir lib/esm",
-    "build:cjs": "tsc --project tsconfig.json --module commonjs --outDir lib/cjs",
-    "build:cdn": "rollup -i lib/esm/index.js -o lib/lymph-client.js -f 'iife' -n lymphClient"
+    "build": "tsc --project tsconfig-production.json",
+    "bundle": "rollup -i lib/LymphClient.js -o dist/lymph-client.js -f 'iife' -n LymphClient"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "rollup": "^0.56.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^22.1.2",
     "@types/jsdom": "^11.0.4",
     "jest": "^22.3.0",
     "jsdom": "^11.6.2",
+    "rollup": "^0.56.3",
+    "source-map-support": "^0.5.3",
     "typescript": "^2.7.1"
   },
   "jest": {
@@ -30,10 +28,13 @@
       "js"
     ],
     "testMatch": [
-      "**/*.tests.ts"
+      "**/src/**/*.tests.ts"
     ],
     "transform": {
-      "\\.ts": "<rootDir>/preprocessor.js"
-    }
+      "\\.ts": "./jest-preprocessor.js"
+    },
+    "setupFiles": [
+      "./jest-setup.js"
+    ]
   }
 }

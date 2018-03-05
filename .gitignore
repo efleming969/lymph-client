@@ -1,13 +1,10 @@
-# general
-.DS_Store
 build
+dist
+lib
+node_modules
 
-# jetbrains
+.DS_Store
 .idea
 
-# npm
-node_modules
-deploy
-
-# typescript
 src/**/*.js
+src/**/*.js.map
