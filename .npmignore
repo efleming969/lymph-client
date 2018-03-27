@@ -3,5 +3,4 @@ examples
 jest-preprocessor.js
 jest-setup.js
 tsconfig.json
-tsconfig-production.json
 wallaby.js

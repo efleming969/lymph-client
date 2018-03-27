@@ -2,7 +2,7 @@ import { Environment } from "./Environment"
 import { createFetchOptions } from "./HTTP"
 
 export interface Command {
-    executeIn( environment: Environment ): void
+    executeIn ( environment: Environment ): void
 }
 
 export class Execute implements Command {

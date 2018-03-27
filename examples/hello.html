@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../dist/lymph-client.js"></script>
+</head>
+
+<body>
+    <main></main>
+    <script>
+        const { HTML, Utils, Runtime, Command } = LymphClient
+        const { h1, main } = HTML
+
+        const create = function ( context ) {
+
+            const init = function () {
+                return [
+                    { text: "Hello, World!" },
+                    Command.none
+                ]
+            }
+
+            const updater = {
+                "change": function ( message, state ) {
+                    return [
+                        Utils.merge( state, { courses: message.data } ),
+                        Command.none
+                    ]
+                }
+            }
+
+            const render = function ( state ) {
+                return main( {}, [
+                    h1( {}, [ state.text ] )
+                ] )
+            }
+
+            return { init, updater, render }
+        }
+
+        Runtime.run( window, { create }, "app" )
+    </script>
+</body>
+
+</html>
