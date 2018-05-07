@@ -14,13 +14,13 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "@types/jest": "^22",
+    "@types/jest": "^22.2.2",
     "@types/jsdom": "^11",
-    "jest": "^22",
+    "jest": "^22.4.3",
     "jsdom": "^11",
-    "source-map-support": "^0.5",
-    "typescript": "^2.7.1",
-    "webpack": "^4",
+    "source-map-support": "^0.5.4",
+    "typescript": "^2.8.1",
+    "webpack": "^4.4.1",
     "webpack-cli": "^2"
   },
   "jest": {
