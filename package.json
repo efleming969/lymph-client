@@ -4,11 +4,10 @@
   "description": "",
   "main": "./lib/LymphClient.js",
   "types": "./lib/LymphClient.d.ts",
-  "jsdelivr": "./dist/lymph-client.js",
   "scripts": {
     "test": "jest",
     "build": "tsc --project tsconfig.json",
-    "bundle": "webpack"
+    "watch": "tsc --project tsconfig-development.json --watch"
   },
   "author": "",
   "license": "ISC",
@@ -16,12 +15,12 @@
   "devDependencies": {
     "@types/jest": "^22.2.2",
     "@types/jsdom": "^11",
+    "http-server": "^0.11.1",
     "jest": "^22.4.3",
     "jsdom": "^11",
+    "parcel-bundler": "^1.8.1",
     "source-map-support": "^0.5.4",
-    "typescript": "^2.8.1",
-    "webpack": "^4.4.1",
-    "webpack-cli": "^2"
+    "typescript": "^2.8.1"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -133,10 +133,10 @@ export const createUpdater = function ( routeDefinitions: any ): ( Message, any 
 export const createContext = function ( names = [] ) {
     return {
         createComponent: function ( component, component_name ) {
-            const { init, updater, render } =
+            const { handlers, init, render } =
                 component.create( createContext( names.concat( component_name ) ) )
 
-            return { init, update: createUpdater( updater ), render }
+            return { init, update: createUpdater( handlers ), render }
         },
         send: function ( name ) {
             return ":" + names.slice( 1 ).concat( name ).join( ":" )
