@@ -9,6 +9,6 @@
     "outDir": "lib"
   },
   "exclude": [
-    "lib"
+    "lib", "examples"
   ]
 }
