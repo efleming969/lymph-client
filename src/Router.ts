@@ -1,3 +1,7 @@
+export const Events = {
+    Changed: "route-changed"
+}
+
 export const match = function ( pathname, routes ) {
     let match
     let index

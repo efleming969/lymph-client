@@ -1,8 +1,9 @@
 import * as DOM from "./DOM"
-import { WindowEnvironment } from "./Environment"
+import * as Router from "./Router"
+import * as Environment from "./Environment"
 
 export const run = function ( window, app ) {
-    const environment = new WindowEnvironment( window )
+    const environment = new Environment.WindowEnvironment( window )
 
     let [ state, initial_command ] = app.init( window.location.hash.slice( 1 ) )
 
@@ -36,7 +37,10 @@ export const run = function ( window, app ) {
     window.addEventListener( "hashchange", function ( e ) {
         window.document.dispatchEvent(
             new window[ "CustomEvent" ]( "action", {
-                detail: { name: `:route-changed`, data: window.location.hash.slice( 1 ) },
+                detail: {
+                    name: Router.Events.Changed,
+                    data: window.location.hash.slice( 1 )
+                },
                 bubbles: true,
                 cancelable: true
             } )
