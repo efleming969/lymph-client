@@ -1,43 +1,33 @@
 import { Utils, Runtime, Command } from "../src/LymphClient"
 import { h1, main, form, input, button } from "../src/HTML"
+import { currentForm } from "../src/Utils"
 
-const Actions = {
-    Change: "change"
+const Events = {
+    Submitted: "submitted"
 }
 
-const create = function ( context ) {
-
-    const handlers = {
-        [ Actions.Change ]: function ( message, state ) {
-            console.log( message )
-            return [
-                state,
-                // Utils.merge( state, { message: message.data } ),
-                Command.none
-            ]
-        }
-    }
-
-    const init = function () {
+const handlers = {
+    [ Events.Submitted ]: function ( message, state ) {
         return [
-            { text: "Hello, World!" },
+            Utils.merge( state, { text: currentForm( message ).text } ),
             Command.none
         ]
     }
-
-    const render = function ( state ) {
-        return main( {}, [
-            h1( {}, [ state.text ] ),
-            form( { onsubmit: context.send( Actions.Change ) },
-                [
-                    input( { name: "text" } ),
-                    button( {}, [ "change" ] )
-                ]
-            )
-        ] )
-    }
-
-    return { handlers, init, render }
 }
 
-Runtime.run( window, { create }, "app" )
+const init = () => [
+    { text: "world" },
+    Command.none
+]
+
+const render = ( state ) => main( {}, [
+    h1( {}, [ `hello, ${ state.text }!` ] ),
+    form( { onsubmit: [ Events.Submitted ] },
+        [
+            input( { name: "text", autocomplete: "off" } ),
+            button( {}, [ "Submit" ] )
+        ]
+    )
+] )
+
+Runtime.run( window, { handlers, init, render } )

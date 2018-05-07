@@ -1,3 +1,9 @@
+type Message = {
+    name: string,
+    data: any,
+    event: any
+}
+
 export const generateId = (function () {
     const ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     const ID_LENGTH = 8
@@ -108,44 +114,3 @@ export const mapObjectToArray = function ( object: any, fn: ( key: string, valiu
     } )
 }
 
-type Message = {
-    name: string,
-    data: any,
-    event: any
-}
-
-const extractMessage = function ( parent_message, message ) {
-    return merge( message, { name: message.name.replace( ":" + parent_message, "" ) } )
-}
-
-export const createUpdater = function ( routeDefinitions: any ): ( Message, any ) => [ any, any ] {
-    return function ( message: Message, state: any ): [ any, any ] {
-        for ( let name in routeDefinitions ) {
-            if ( message.name.indexOf( ":" + name ) === 0 ) {
-                return routeDefinitions[ name ]( extractMessage( name, message ), state )
-            }
-        }
-
-        return [ state, undefined ]
-    }
-}
-
-export const createContext = function ( names = [] ) {
-    return {
-        createComponent: function ( component, component_name ) {
-            const { handlers, init, render } =
-                component.create( createContext( names.concat( component_name ) ) )
-
-            return { init, update: createUpdater( handlers ), render }
-        },
-        send: function ( name ) {
-            return ":" + names.slice( 1 ).concat( name ).join( ":" )
-        }
-    }
-}
-
-export const createActionHandler = window => function ( action, callback ) {
-    window.addEventListener( "action", function ( e ) {
-        if ( e[ "detail" ].name === action ) callback( e[ "detail" ] )
-    } )
-}
